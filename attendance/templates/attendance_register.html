@@ -1,10 +1,84 @@
+{% load static tailwind_tags %}
 <html lang="en">
 <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    {% tailwind_css %}
 </head>
-<body>
+<body class="bg-blue-600">
     
+    <div class="text-right pr-6 pt-6">
+       
+        <span class="material-symbols-outlined invert text-2xl pr-4">
+            settings
+        </span>
+        <span class="material-symbols-outlined invert text-2xl">
+            account_circle
+            </span>
+    </div>
+
+    <div class="h-full mt-10 ml-56 align-bottom rounded-b-none rounded-r-none bg-gray-100 rounded-xl">
+        
+        <p class="p-0 pt-4 pl-6 text-2xl text-blue-600" style="font-family: 'Jost'">Attendance Sheet</p>
+        <div class="flex p-4 align-middle pt-0.5 m-0.5">
+            <p class="p-2 text-base text-blue-600" style="font-family: 'Jost'">Date</p>
+            <form action="post">
+                <input class="text-sm max-w-36 rounded border-none" type="date" name="date" id="" placeholder="">
+            </form>
+        </div>
+        <div class="min-w-fit grid grid-cols-5 border-spacing-x-6 ml-6">
+            <table class="border border-collapse border-white  bg-white">
+                <tr class="bg-blue-600 h-12 ">
+                    <th class="min-w-14 text-white border border-gray-300">No.</th>
+                    <th class="min-w-64 text-white border border-gray-300">Name</th>
+                    <th class="min-w-48 text-white border border-gray-300">Morning session</th>
+                    <th class="min-w-48 text-white border border-gray-300">Afternoon session</th>
+                    <th class="min-w-40 text-white border border-gray-300">Extra hours</th>
+                </tr>
+
+                <tr>
+                    <td class="min-w-14 border border-gray-300 text-center">1</td>
+                    <td class="min-w-14 border border-gray-300 px-4">Shelvin Sunil Philip</td>
+                    <td class="min-w-14 border border-gray-300 text-center items-center">
+                        <form action="post">
+                            <input type="checkbox" class="mt-4 border" name="" id="">
+                        </form>
+                    </td>
+                    <td class="min-w-14 border border-gray-300 text-center items-center">
+                        <form action="post">
+                            <input type="checkbox"  class="mt-4 " name="" id="">
+                        </form>
+                    </td>
+                    <td class="min-w-14 border border-gray-300">
+                        <form action="post" class="text-center">
+                            
+                            <select name="" id="" class="h-7 min-w-24 mt-3 border-none px-2 p-0">
+                                <option value="0" selected>None</option>
+                                <option value="0.5" >EH: 30min</option>
+                                <option value="1" >EH: 1 hours</option>
+                                <option value="1.5" >EH: 1.5 hours</option>
+                                <option value="2" >EH: 2 hours</option>
+                                <option value="2.5" >EH: 2.5 hours</option>
+                                <option value="3" >EH: 3 hours</option>
+                                <option value="3.5" >EH: 3.5 hours</option>
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="h-full max-w-52 mt-10 mr-56 align-bottom rounded-b-none rounded-l-none bg-gray-100 rounded-xl">
+        hai
+    </div>
+
 </body>
 </html>
