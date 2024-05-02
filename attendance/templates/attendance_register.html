@@ -12,8 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     {% tailwind_css %}
 </head>
-<body class="bg-blue-600">
-    
+<body class="bg-blue-700">
+
     <div class="text-right pr-6 pt-6">
        
         <span class="material-symbols-outlined invert text-2xl pr-4">
@@ -23,43 +23,84 @@
             account_circle
             </span>
     </div>
+<div class="flex">
+    <div class="bg-white ml-2 mr-2 mt-24 min-w-52 rounded-xl mb-20">
 
-    <div class="h-full mt-10 ml-56 align-bottom rounded-b-none rounded-r-none bg-gray-100 rounded-xl">
+    
+        <ul class="pt-8 pl-2">
+            <a href="#">
+                <li class="p-4 pt-2 bg-blue-100 shadow-inner hover:shadow-none hover:px-5 rounded-t-lg rounded-tr-none flex pointer cursor-pointer">
+                    <span class="material-symbols-outlined pr-2 ">
+                    checklist
+                    </span> 
+                    Attendance Sheet
+                </li>
+            </a>
+            <a href="#">
+                <li class="p-4 flex mr-4 cursor-pointer hover:px-5">
+                    <span class="material-symbols-outlined pr-2">
+                        description
+                        </span>
+                    Attendance Report
+                    by date
+                </li>
+            </a>
+            <a href="#">
+                <li class="p-4 flex cursor-pointer hover:px-5">
+                    <span class="material-symbols-outlined pr-2">
+                        calendar_apps_script
+                        </span>
+                    Attendance Report by month
+                </li>
+            </a>
+        </ul>
+
+    </div>
+    <div class="min-h-screen mt-10  align-bottom  bg-gray-100 rounded-xl mb-20 pb-10 mr-2">
         
         <p class="p-0 pt-4 pl-6 text-2xl text-blue-600" style="font-family: 'Jost'">Attendance Sheet</p>
-        <div class="flex p-4 align-middle pt-0.5 m-0.5">
-            <p class="p-2 text-base text-blue-600" style="font-family: 'Jost'">Date</p>
-            <form action="post">
-                <input class="text-sm max-w-36 rounded border-none" type="date" name="date" id="" placeholder="">
-            </form>
+        <div class="grid grid-cols-2">
+                <div class="flex p-4 align-middle pt-0.5 m-0.5">
+                    <p class="p-2 text-lg text-blue-600" style="font-family: 'Jost'">Date</p>
+                    <form action="post">
+                        <input class="text-sm mt-1 max-w-36 rounded border-spacing-2 cursor-pointer" type="date" name="date" id="" placeholder="">
+                    
+                </div>
+                <div class="flex p-4 align-middle pt-0.5 m-0.5 ">
+                    <p class="p-2 text-lg text-blue-600" style="font-family: 'Jost'">Working Day</p>
+                    <form action="post">
+                        <input class="text-2xl max-w-36 rounded border mt-2 cursor-pointer p-3" type="checkbox"  name="working" id="" >
+                    
+                </div>
         </div>
         <div class="min-w-fit grid grid-cols-5 border-spacing-x-6 ml-6">
             <table class="border border-collapse border-white  bg-white">
-                <tr class="bg-blue-600 h-12 ">
-                    <th class="min-w-14 text-white border border-gray-300">No.</th>
+                <tr class="bg-blue-700 h-12 ">
+                    <th class="min-w-14 text-white border border-black border-b-white border-r-white py-4">No.</th>
                     <th class="min-w-64 text-white border border-gray-300">Name</th>
                     <th class="min-w-48 text-white border border-gray-300">Morning session</th>
                     <th class="min-w-48 text-white border border-gray-300">Afternoon session</th>
                     <th class="min-w-40 text-white border border-gray-300">Extra hours</th>
                 </tr>
+{% for i in details %}
 
-                <tr>
-                    <td class="min-w-14 border border-gray-300 text-center">1</td>
-                    <td class="min-w-14 border border-gray-300 px-4">Shelvin Sunil Philip</td>
-                    <td class="min-w-14 border border-gray-300 text-center items-center">
-                        <form action="post">
-                            <input type="checkbox" class="mt-4 border" name="" id="">
-                        </form>
+                <tr class="uppercase">
+                    <td class="min-w-14 border border-gray-300 text-center">{{i.slno}}</td>
+                    <td class="min-w-14 border border-gray-300 px-4">{{i.name}}</td>
+                    <td class="min-w-14 border border-gray-300 text-center pb-3 items-center">
+                        
+                            <input type="checkbox" class="mt-4 border cursor-pointer " name="" id="" checked>
+                        
                     </td>
-                    <td class="min-w-14 border border-gray-300 text-center items-center">
-                        <form action="post">
-                            <input type="checkbox"  class="mt-4 " name="" id="">
-                        </form>
+                    <td class="min-w-14 border border-gray-300 text-center pb-3 items-center">
+                        
+                            <input type="checkbox"  class="mt-4 cursor-pointer" name="" id="" checked>
+                        
                     </td>
-                    <td class="min-w-14 border border-gray-300">
-                        <form action="post" class="text-center">
+                    <td class="min-w-14 border text-center pb-2 border-gray-300">
+                        
                             
-                            <select name="" id="" class="h-7 min-w-24 mt-3 border-none px-2 p-0">
+                            <select name="" id="" class="h-7 min-w-32  mt-3 border rounded-lg px-2 p-0 cursor-pointer">
                                 <option value="0" selected>None</option>
                                 <option value="0.5" >EH: 30min</option>
                                 <option value="1" >EH: 1 hours</option>
@@ -72,13 +113,14 @@
                         </form>
                     </td>
                 </tr>
+               
+                  
+{% endfor %}
             </table>
         </div>
     </div>
-
-    <div class="h-full max-w-52 mt-10 mr-56 align-bottom rounded-b-none rounded-l-none bg-gray-100 rounded-xl">
-        hai
-    </div>
+</div>
+    
 
 </body>
 </html>
