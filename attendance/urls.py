@@ -3,7 +3,9 @@ from django.urls import path
 from attendance import  views
 
 urlpatterns = [
-   path('attendance/', views.attendance_register)
+   path('', views.attendance_register),
+   path('index', views.index),
+   path('attendance', views.attendance)
     
     
 ]

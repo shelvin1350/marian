@@ -1,126 +1,225 @@
 {% load static tailwind_tags %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Attendance</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     {% tailwind_css %}
+    <style>
+        #attendanceSheet {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        #attendanceSheet.show {
+            max-height: 500px; /* increased max-height for larger content */
+        }
+
+        .sidebar-item {
+            transition: padding-left 0.3s, box-shadow 0.3s;
+        }
+
+        .sidebar-item:hover {
+            padding-left: 1.25rem; /* increased padding-left for hover */
+            box-shadow: none;
+        }
+
+        .table-row {
+            transition: background-color 0.3s;
+        }
+
+        .table-row:hover {
+            background-color: #e0f7fa; /* lighter background color on hover */
+        }
+
+        .sidebar {
+            transition: all 0.3s ease-out;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            margin-top: 9px;
+            margin-left: 2px;
+            display: inline-block;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2563EB; /* Tailwind blue-600 */
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        input:disabled + .slider {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        input:disabled + .slider:before {
+            background-color: #999;
+        }
+    </style>
+    <script>
+        function toggleAttendanceSheet() {
+            const workingToggle = document.getElementById('working');
+            const attendanceSheet = document.getElementById('attendanceSheet');
+
+            if (workingToggle.checked) {
+                attendanceSheet.classList.add('show');
+            } else {
+                attendanceSheet.classList.remove('show');
+            }
+        }
+
+        function checkDateSelected() {
+            const dateInput = document.getElementById('date');
+            const workingToggle = document.getElementById('working');
+            workingToggle.disabled = !dateInput.value;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            toggleAttendanceSheet();
+            checkDateSelected();
+            document.getElementById('working').addEventListener('change', toggleAttendanceSheet);
+            document.getElementById('date').addEventListener('change', checkDateSelected);
+        });
+    </script>
 </head>
-<body class="bg-blue-700">
-
+<body class="bg-blue-700 min-h-screen flex flex-col">
     <div class="text-right pr-6 pt-6">
-       
-        <span class="material-symbols-outlined invert text-2xl pr-4">
-            settings
-        </span>
-        <span class="material-symbols-outlined invert text-2xl">
-            account_circle
-            </span>
+        <span class="material-symbols-outlined invert text-2xl pr-4">settings</span>
+        <span class="material-symbols-outlined invert text-2xl">account_circle</span>
     </div>
-<div class="flex">
-    <div class="bg-white ml-2 mr-2 mt-24 min-w-52 rounded-xl mb-20">
 
-    
-        <ul class="pt-8 pl-2">
-            <a href="#">
-                <li class="p-4 pt-2 bg-blue-100 shadow-inner hover:shadow-none hover:px-5 rounded-t-lg rounded-tr-none flex pointer cursor-pointer">
-                    <span class="material-symbols-outlined pr-2 ">
-                    checklist
-                    </span> 
-                    Attendance Sheet
-                </li>
-            </a>
-            <a href="#">
-                <li class="p-4 flex mr-4 cursor-pointer hover:px-5">
-                    <span class="material-symbols-outlined pr-2">
-                        description
-                        </span>
-                    Attendance Report
-                    by date
-                </li>
-            </a>
-            <a href="#">
-                <li class="p-4 flex cursor-pointer hover:px-5">
-                    <span class="material-symbols-outlined pr-2">
-                        calendar_apps_script
-                        </span>
-                    Attendance Report by month
-                </li>
-            </a>
-        </ul>
+    <div class="flex flex-1">
+        <!-- Fixed left container with height same as the main container -->
+        <div class="fixed top-24 left-2 w-56 h-full bg-white rounded-xl shadow-lg">
+            <ul class="pt-8 pl-2">
+                <a href="#">
+                    <li class="sidebar-item p-4 pt-2 bg-blue-100 shadow-inner hover:shadow-none hover:px-5 rounded-t-lg rounded-tr-none flex cursor-pointer">
+                        <span class="material-symbols-outlined pr-2">checklist</span>
+                        Attendance Sheet
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="sidebar-item p-4 flex cursor-pointer hover:px-5">
+                        <span class="material-symbols-outlined pr-2">description</span> 
+                        Attendance Report by date
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="sidebar-item p-4 flex cursor-pointer hover:px-5">
+                        <span class="material-symbols-outlined pr-2">calendar_apps_script</span> 
+                        Attendance Report by month
+                    </li>
+                </a>
+            </ul>
+        </div>
 
-    </div>
-    <div class="min-h-screen mt-10  align-bottom  bg-gray-100 rounded-xl mb-20 pb-10 mr-2">
-        
-        <p class="p-0 pt-4 pl-6 text-2xl text-blue-600" style="font-family: 'Jost'">Attendance Sheet</p>
-        <div class="grid grid-cols-2">
-                <div class="flex p-4 align-middle pt-0.5 m-0.5">
+        <!-- Main content container -->
+        <form method="post" action="attendance">
+            {% csrf_token %}
+
+        <div class="ml-60 min-h-screen mt-10 align-bottom bg-gray-100 rounded-xl mb-20 pb-10 pr-2 min-w-fit flex-grow">
+            <p class="p-0 pt-4 pl-6 text-2xl text-blue-600" style="font-family: 'Jost'">Attendance Sheet</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex p-4 align-middle">
                     <p class="p-2 text-lg text-blue-600" style="font-family: 'Jost'">Date</p>
-                    <form action="post">
-                        <input class="text-sm mt-1 max-w-36 rounded border-spacing-2 cursor-pointer" type="date" name="date" id="" placeholder="">
-                    
+                    <input class="text-sm mt-1 max-w-36 rounded border-spacing-2 cursor-pointer" type="date" name="date" id="date">
                 </div>
-                <div class="flex p-4 align-middle pt-0.5 m-0.5 ">
+                <div class="flex p-4 align-middle">
                     <p class="p-2 text-lg text-blue-600" style="font-family: 'Jost'">Working Day</p>
-                    <form action="post">
-                        <input class="text-2xl max-w-36 rounded border mt-2 cursor-pointer p-3" type="checkbox"  name="working" id="" >
-                    
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="working" id="working">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-        </div>
-        <div class="min-w-fit grid grid-cols-5 border-spacing-x-6 ml-6">
-            <table class="border border-collapse border-white  bg-white">
-                <tr class="bg-blue-700 h-12 ">
-                    <th class="min-w-14 text-white border border-black border-b-white border-r-white py-4">No.</th>
-                    <th class="min-w-64 text-white border border-gray-300">Name</th>
-                    <th class="min-w-48 text-white border border-gray-300">Morning session</th>
-                    <th class="min-w-48 text-white border border-gray-300">Afternoon session</th>
-                    <th class="min-w-40 text-white border border-gray-300">Extra hours</th>
-                </tr>
-{% for i in details %}
+            </div>
 
-                <tr class="uppercase">
-                    <td class="min-w-14 border border-gray-300 text-center">{{i.slno}}</td>
-                    <td class="min-w-14 border border-gray-300 px-4">{{i.name}}</td>
-                    <td class="min-w-14 border border-gray-300 text-center pb-3 items-center">
-                        
-                            <input type="checkbox" class="mt-4 border cursor-pointer " name="" id="" checked>
-                        
-                    </td>
-                    <td class="min-w-14 border border-gray-300 text-center pb-3 items-center">
-                        
-                            <input type="checkbox"  class="mt-4 cursor-pointer" name="" id="" checked>
-                        
-                    </td>
-                    <td class="min-w-14 border text-center pb-2 border-gray-300">
-                        
-                            
-                            <select name="" id="" class="h-7 min-w-32  mt-3 border rounded-lg px-2 p-0 cursor-pointer">
-                                <option value="0" selected>None</option>
-                                <option value="0.5" >EH: 30min</option>
-                                <option value="1" >EH: 1 hours</option>
-                                <option value="1.5" >EH: 1.5 hours</option>
-                                <option value="2" >EH: 2 hours</option>
-                                <option value="2.5" >EH: 2.5 hours</option>
-                                <option value="3" >EH: 3 hours</option>
-                                <option value="3.5" >EH: 3.5 hours</option>
-                            </select>
-                        </form>
-                    </td>
-                </tr>
-               
-                  
-{% endfor %}
-            </table>
+            <div id="attendanceSheet">
+                <div class="overflow-x-auto">
+                    <table class="border border-collapse ml-1 border-white bg-white w-full">
+                        <tr class="bg-blue-700 h-12">
+                            <th class="min-w-14 text-white border border-b-white border-r-white py-4">No.</th>
+                            <th class="min-w-64 text-white border border-gray-300">Name</th>
+                            <th class="min-w-48 text-white border border-gray-300">Morning session</th>
+                            <th class="min-w-48 text-white border border-gray-300">Afternoon session</th>
+                            <th class="min-w-40 text-white border border-gray-300">Extra hours</th>
+                        </tr>
+
+                        {% for i in details %}
+                        <tr class="uppercase table-row">
+                            <td class="min-w-14 border border-gray-300 text-center">{{ i.id }}</td>
+                            <td class="min-w-14 border border-gray-300 px-2">{{ i.FirstName }} {{ i.LastName }}</td>
+                            <td class="min-w-14 border border-gray-300 text-center pb-3 items-center">
+                                <input type="checkbox" class="mt-4 border cursor-pointer" name="morning_{{ i.id }}" checked>
+                            </td>
+                            <td class="min-w-14 border border-gray-300 text-center pb-3 items-center">
+                                <input type="checkbox" class="mt-4 cursor-pointer" name="afternoon_{{ i.id }}" checked>
+                            </td>
+                            <td class="min-w-14 border text-center pb-2 border-gray-300">
+                                <select name="extra_hours_{{ i.id }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
+                                    <option value="0" selected>None</option>
+                                    <option value="0.5">EH: 30min</option>
+                                    <option value="1">EH: 1 hour</option>
+                                    <option value="1.5">EH: 1.5 hours</option>
+                                    <option value="2">EH: 2 hours</option>
+                                    <option value="2.5">EH: 2.5 hours</option>
+                                    <option value="3">EH: 3 hours</option>
+                                    <option value="3.5">EH: 3.5 hours</option>
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="text-center mt-5">
+                    <button class="border bg-blue-600 px-10 py-2 text-white font-semibold shadow-md rounded-md">Submit</button>
+                </div>
+            </div>
         </div>
+    </form>
     </div>
-</div>
-    
-
 </body>
 </html>

@@ -8,6 +8,4 @@ urlpatterns = [
     path('', include('attendance.urls')),
 
 
-    path('', views.index),
-
 ]
