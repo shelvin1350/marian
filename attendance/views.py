@@ -95,3 +95,12 @@ def attendance(request):
 
     data = Employees.objects.all()
     return render(request, 'attendance_register.html', {'details': data})
+
+
+def attendanceByDate(request):
+    data = Employees.objects.all()
+    return render(request, 'attendance_date.html', {'details': data})
+
+def viewByDate(request):
+    return render(request, 'attendance_date_view.html')
+    

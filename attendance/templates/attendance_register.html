@@ -156,13 +156,13 @@
     <div class="flex flex-1">
         <div class="fixed top-24 left-2 w-56 h-full bg-white rounded-xl shadow-lg">
             <ul class="pt-8 pl-2">
-                <a href="#">
+                <a href="{% url 'attendance' %}">
                     <li class="sidebar-item p-4 pt-2 bg-blue-100 shadow-inner hover:shadow-none hover:px-5 rounded-t-lg rounded-tr-none flex cursor-pointer">
                         <span class="material-symbols-outlined pr-2">checklist</span>
                         Attendance Sheet
                     </li>
                 </a>
-                <a href="#">
+                <a href="{% url 'attendance/date' %}">
                     <li class="sidebar-item p-4 flex cursor-pointer hover:px-5">
                         <span class="material-symbols-outlined pr-2">description</span> 
                         Attendance Report by date
