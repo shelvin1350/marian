@@ -19,7 +19,7 @@
         }
 
         #attendanceSheet.show {
-            max-height: 500px; /* increased max-height for larger content */
+            max-height: 6000px;
         }
 
         .sidebar-item {
@@ -27,7 +27,7 @@
         }
 
         .sidebar-item:hover {
-            padding-left: 1.25rem; /* increased padding-left for hover */
+            padding-left: 1.25rem;
             box-shadow: none;
         }
 
@@ -36,7 +36,7 @@
         }
 
         .table-row:hover {
-            background-color: #e0f7fa; /* lighter background color on hover */
+            background-color: #e0f7fa;
         }
 
         .sidebar {
@@ -83,7 +83,7 @@
         }
 
         input:checked + .slider {
-            background-color: #2563EB; /* Tailwind blue-600 */
+            background-color: #2563EB;
         }
 
         input:checked + .slider:before {
@@ -97,6 +97,20 @@
 
         input:disabled + .slider:before {
             background-color: #999;
+        }
+
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-inactive {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
     <script>
@@ -117,6 +131,14 @@
             workingToggle.disabled = !dateInput.value;
         }
 
+        function showSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.add('modal-active');
+            setTimeout(() => {
+                modal.classList.remove('modal-active');
+            }, 3000);
+        }
+
         document.addEventListener('DOMContentLoaded', (event) => {
             toggleAttendanceSheet();
             checkDateSelected();
@@ -132,7 +154,6 @@
     </div>
 
     <div class="flex flex-1">
-        <!-- Fixed left container with height same as the main container -->
         <div class="fixed top-24 left-2 w-56 h-full bg-white rounded-xl shadow-lg">
             <ul class="pt-8 pl-2">
                 <a href="#">
@@ -156,11 +177,10 @@
             </ul>
         </div>
 
-        <!-- Main content container -->
-        <form method="post" action="attendance">
+        <form method="post" action="attendance" onsubmit="showSuccessModal(); return true;">
             {% csrf_token %}
 
-        <div class="ml-60 min-h-screen mt-10 align-bottom bg-gray-100 rounded-xl mb-20 pb-10 pr-2 min-w-fit flex-grow">
+        <div class="ml-60 min-h-screen mt-10 align-bottom bg-gray-100 rounded-xl mb-20 pb-10 pr-2 flex-grow" style="width:970px">
             <p class="p-0 pt-4 pl-6 text-2xl text-blue-600" style="font-family: 'Jost'">Attendance Sheet</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -179,7 +199,7 @@
 
             <div id="attendanceSheet">
                 <div class="overflow-x-auto">
-                    <table class="border border-collapse ml-1 border-white bg-white w-full">
+                    <table class="border border-collapse ml-8 border-white bg-white min-w-fit">
                         <tr class="bg-blue-700 h-12">
                             <th class="min-w-14 text-white border border-b-white border-r-white py-4">No.</th>
                             <th class="min-w-64 text-white border border-gray-300">Name</th>
@@ -192,13 +212,13 @@
                         <tr class="uppercase table-row">
                             <td class="min-w-14 border border-gray-300 text-center">{{ i.id }}</td>
                             <td class="min-w-14 border border-gray-300 px-2">{{ i.FirstName }} {{ i.LastName }}</td>
-                            <td class="min-w-14 border border-gray-300 text-center pb-3 items-center">
+                            <td class="min-w-24 border border-gray-300 text-center pb-3 items-center">
                                 <input type="checkbox" class="mt-4 border cursor-pointer" name="morning_{{ i.id }}" checked>
                             </td>
-                            <td class="min-w-14 border border-gray-300 text-center pb-3 items-center">
+                            <td class="min-w-24 border border-gray-300 text-center pb-3 items-center">
                                 <input type="checkbox" class="mt-4 cursor-pointer" name="afternoon_{{ i.id }}" checked>
                             </td>
-                            <td class="min-w-14 border text-center pb-2 border-gray-300">
+                            <td class="min-w-24 border text-center pb-2 border-gray-300">
                                 <select name="extra_hours_{{ i.id }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
                                     <option value="0" selected>None</option>
                                     <option value="0.5">EH: 30min</option>
@@ -220,6 +240,13 @@
             </div>
         </div>
     </form>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 modal-inactive">
+        <div class="bg-white rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Success!</h2>
+            <p>Attendance has been submitted successfully.</p>
+        </div>
     </div>
 </body>
 </html>

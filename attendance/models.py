@@ -11,8 +11,8 @@ class Employees(models.Model):
 class Attendance(models.Model):
     employee = models.ForeignKey(Employees, on_delete=models.CASCADE)
     Date = models.DateField()
-    ExtraHours = models.IntegerField(default=0)
-    Forenoon = models.IntegerField(default=0)
-    Afternoon = models.IntegerField(default=0)
-    TotalHours = models.IntegerField(null=True, blank=True)  
+    Forenoon = models.FloatField(default=0)
+    Afternoon = models.FloatField(default=0)
+    ExtraHours = models.FloatField(default=0)
+    TotalHours = models.FloatField(null=True, blank=True)  
     
