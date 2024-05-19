@@ -150,11 +150,6 @@
 
         <div class="ml-60 min-h-screen mt-10 align-bottom bg-gray-100 rounded-xl mb-3 pb-10 pr-2 flex-grow" style="width:970px">
             <p class="p-0 pt-8 pl-6 text-3xl ml-3  text-blue-600 font-normal mb-9 " style="font-family: 'Jost'">Attendance report by date</p>
-
-            
-                
-
-
                 <div class="overflow-x-auto">
                     <table class="border border-collapse ml-8 border-white bg-white min-w-fit">
                         <tr class="bg-blue-700 h-12">
@@ -168,9 +163,9 @@
                             <td class="min-w-14 py-2 border border-gray-300 text-center">{{ i.id }}</td>
                             <td class="min-w-64 py-2 border border-gray-300 px-4">{{ i.FirstName }} {{ i.LastName }}</td>
                             <td class="min-w-72 py-2 border border-gray-300 text-center pb-3 items-center">
-                                <a href="#"><button type="button" class="border px-8 py-1 rounded shadow-md bg-gray-300 transition transform hover:bg-gray-400 hover:scale-105 hover:shadow-lg">
+                                <a href="{% url 'view_employee_details' i.id %}" class="border px-8 py-1 rounded shadow-md bg-gray-300 transition transform hover:bg-gray-400 hover:scale-105 hover:shadow-lg">
                                     View
-                                </button>  </a>
+                                </a>
                             </td>
                             
                             

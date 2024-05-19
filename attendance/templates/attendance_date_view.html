@@ -145,62 +145,58 @@
             </ul>
         </div>
 
-        <form method="post" action="" >
-            {% csrf_token %}
-
         <div class="ml-60 min-h-screen mt-10 align-bottom bg-gray-100 rounded-xl mb-3 pb-10 pr-2 flex-grow" style="width:970px">
-            <p class="p-0 pt-8 pl-6 text-3xl ml-3  text-blue-600 font-normal mb-2 " style="font-family: 'Jost'">Attendance report by date</p>
+            <p class="p-0 pt-8 pl-6 text-3xl ml-3 text-blue-600 font-normal mb-2 " style="font-family: 'Jost'">Attendance report by date</p>
             <div class="p-0 pt-4 pl-6 text-lg ml-2" style="font-family: 'Jost'">
-                Name :
+                Name : {{ employee.FirstName }} {{ employee.LastName }}
             </div>
             <div class="p-0 pt-2 pl-2 flex ml-2 mb-4" style="font-family: 'Jost'">
                 <div class="mt-1 ml-4">Date From</div>
                 <div class="mr-2 text-lg flex">
-                
-
-                        <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" name="date" id="" placeholder="">
-                    
+                    <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" id="date_from" placeholder="">
                 </div>
                 <div class="mt-1 ml-4">Date To</div>
                 <div class="text-lg ">
-                
-
-                        <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" name="date" id="" placeholder="">
+                    <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" id="date_to" placeholder="">
                 </div>
-                <button class="border-none bg-blue-600 px-8 py-1 ml-10 text-white font-semibold shadow-md rounded-md">View</button>
-                
+                <button class="border-none bg-blue-600 px-8 py-1 ml-10 text-white font-semibold shadow-md rounded-md" onclick="fetchAttendance()">View</button>
             </div>
-            <div class="overflow-x-auto">
-                    <table class="border border-collapse ml-8 border-white bg-white min-w-fit">
-                        <tr class="bg-blue-700 h-12">
-                            <th class="min-w-14 text-white border border-b-white border-r-white py-4">No.</th>
-                            <th class="min-w-14 text-white border border-gray-300  px-8">Date</th>
-                            <th class="min-w-48 text-white border border-gray-300">Forenoon</th>
-                            <th class="min-w-48 text-white border border-gray-300">Afternoon</th>
-                            <th class="min-w-48 text-white border border-gray-300">Extra hours</th>
-                            <th class="min-w-48 text-white border border-gray-300">Total Working Hours</th>
-                        </tr>
-
-                        {% for i in details %}
-                        <tr class="uppercase table-row ">
-                            <td class="min-w-14 py-2 border border-gray-300 text-center">{{ i.id }}</td>
-                            <td class="min-w-64 py-2 border border-gray-300 px-4">{{ i.FirstName }} {{ i.LastName }}</td>
-                            <td class="min-w-72 py-2 border border-gray-300 text-center pb-3 items-center">
-                                <a href="#"><button type="button" class="border px-8 py-1 rounded shadow-md bg-gray-300 transition transform hover:bg-gray-400 hover:scale-105 hover:shadow-lg">
-                                    View
-                                </button>  </a>
-                            </td>
-                            
-                            
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-               
-
+            <div id="attendanceRecords" class="overflow-x-auto">
+                <!-- Attendance records will be displayed here -->
+            </div>
         </div>
+    </div>
 
+    <script>
+        function fetchAttendance() {
+            var dateFrom = document.getElementById('date_from').value;
+            var dateTo = document.getElementById('date_to').value;
 
-
+            // Fetch attendance records via AJAX
+            $.ajax({
+                url: '{% url 'employee_attendance' employee_id=employee_id %}',
+                method: 'POST',
+                data: {
+                    'date_from': dateFrom,
+                    'date_to': dateTo,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    var attendanceHtml = '';
+                    response.attendance_data.forEach(function(record, index) {
+                        attendanceHtml += '<p>Date: ' + record.date + '</p>' +
+                                            '<p>Forenoon: ' + record.forenoon + '</p>' +
+                                            '<p>Afternoon: ' + record.afternoon + '</p>' +
+                                            '<p>Extra Hours: ' + record.extra_hours + '</p>' +
+                                            '<p>Total Hours: ' + record.total_hours + '</p><hr>';
+                    });
+                    document.getElementById('attendanceRecords').innerHTML = attendanceHtml;
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+    </script>
 </body>
 </html>

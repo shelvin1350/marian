@@ -196,7 +196,9 @@
                     </label>
                 </div>
             </div>
-
+            {% if e.exist %}
+                <p>The attendance is already entered. Please select another date</p>
+            {% else %}
             <div id="attendanceSheet">
                 <div class="overflow-x-auto">
                     <table class="border border-collapse ml-8 border-white bg-white min-w-fit">
@@ -238,6 +240,7 @@
                     <button class="border bg-blue-600 px-10 py-2 text-white font-semibold shadow-md rounded-md">Submit</button>
                 </div>
             </div>
+            {% endif %}
         </div>
     </form>
 

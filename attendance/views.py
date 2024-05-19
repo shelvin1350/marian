@@ -1,41 +1,30 @@
 import random
-from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.shortcuts import redirect, render, get_object_or_404
+from django.http import HttpResponse, JsonResponse
 from faker import Faker
 from django.db import transaction
 from . models import Employees,Attendance
+from django.views.decorators.csrf import csrf_protect
 
 
 def index(request):
     return render(request,'index.html')
 
 def attendance_register(request):
+    date = request.GET.get('date')
+    exist = False
+    if date:
+        existing_records = Attendance.objects.filter(Date=date)
+        if existing_records.exists():
+            print(date)
+            exist=True
     data = Employees.objects.all()
-    # faker = Faker()
-    # positions = ['Manager', 'Developer', 'Designer', 'QA', 'DevOps', 'HR', 'Sales', 'Support']
-    
-    # for _ in range(50):
-    #     first_name = faker.first_name()
-    #     last_name = faker.last_name()
-    #     date_of_birth = faker.date_of_birth(minimum_age=22, maximum_age=65)
-    #     position = random.choice(positions)
-    #     email = faker.email()
-    #     phone_number = faker.phone_number()
-
-    #     Employees.objects.create(
-    #         FirstName=first_name,
-    #         LastName=last_name,
-    #         DateOfBirth=date_of_birth,
-    #         Position=position,
-    #         Email=email,
-    #         PhoneNumber=phone_number
-    #     )
-    
-    return render(request, 'attendance_register.html', {'details':data})
+    return render(request, 'attendance_register.html',  {'e': exist, 'details': data})
 
 def attendance(request):
     if request.method == "POST":
         date = request.POST.get('date')
+
         if not date:
             # Handle missing date error
             return redirect('attendance')
@@ -99,8 +88,38 @@ def attendance(request):
 
 def attendanceByDate(request):
     data = Employees.objects.all()
-    return render(request, 'attendance_date.html', {'details': data})
+    return render(request, 'attendance_date.html', {'details':data})
 
-def viewByDate(request):
-    return render(request, 'attendance_date_view.html')
+@csrf_protect
+def view_employee_details(request, employee_id):
+    # Retrieve the employee details based on the ID
+    employee = get_object_or_404(Employees, id=employee_id)
+    return render(request, 'attendance_date_view.html', {'employee': employee})
     
+    
+def view_employee_attendance(request, employee_id):
+    if request.method == 'POST' and request.is_ajax():
+        date_from = request.POST.get('date_from')
+        date_to = request.POST.get('date_to')
+
+        # Query the attendance records for the employee within the specified date range
+        attendance_data = Attendance.objects.filter(
+            employee_id=employee_id,
+            Date__range=[date_from, date_to]
+        ).values('Date', 'Forenoon', 'Afternoon', 'ExtraHours', 'TotalHours')
+
+        # Prepare the data to be sent as JSON response
+        attendance_list = []
+        for attendance in attendance_data:
+            attendance_list.append({
+                'date': attendance['Date'],
+                'forenoon': attendance['Forenoon'],
+                'afternoon': attendance['Afternoon'],
+                'extra_hours': attendance['ExtraHours'],
+                'total_hours': attendance['TotalHours']
+            })
+
+        return JsonResponse({'attendance_data': attendance_list})
+
+    # If not a POST request or not an AJAX request, return 404
+    return JsonResponse({'error': 'Page not found'}, status=404)
