@@ -98,7 +98,7 @@ def view_employee_details(request, employee_id):
     
     
 def view_employee_attendance(request, employee_id):
-    if request.method == 'POST' and request.is_ajax():
+    if request.method == 'POST':
         date_from = request.POST.get('date_from')
         date_to = request.POST.get('date_to')
 

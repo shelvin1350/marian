@@ -150,53 +150,59 @@
             <div class="p-0 pt-4 pl-6 text-lg ml-2" style="font-family: 'Jost'">
                 Name : {{ employee.FirstName }} {{ employee.LastName }}
             </div>
+        <form action="" method="get">
             <div class="p-0 pt-2 pl-2 flex ml-2 mb-4" style="font-family: 'Jost'">
                 <div class="mt-1 ml-4">Date From</div>
                 <div class="mr-2 text-lg flex">
-                    <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" id="date_from" placeholder="">
+                    <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" id="date_from" name="date_from" placeholder="">
                 </div>
                 <div class="mt-1 ml-4">Date To</div>
                 <div class="text-lg ">
-                    <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" id="date_to" placeholder="">
+                    <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" id="date_to" name="date_to" placeholder="">
                 </div>
-                <button class="border-none bg-blue-600 px-8 py-1 ml-10 text-white font-semibold shadow-md rounded-md" onclick="fetchAttendance()">View</button>
+                <button class="border-none bg-blue-600 px-8 py-1 ml-10 text-white font-semibold shadow-md rounded-md" value="{{ employee.id }}">View</button>
             </div>
-            <div id="attendanceRecords" class="overflow-x-auto">
-                <!-- Attendance records will be displayed here -->
+        </form>
+            <div id="" class="overflow-x-auto max">
+                <div id="">
+                    <div class="overflow-x-auto">
+                        <table class="border border-collapse ml-8 border-white bg-white min-w-fit">
+                            <tr class="bg-blue-700 h-12">
+                                <th class="min-w-14 text-white border border-b-white border-r-white py-4">No.</th>
+                                <th class="min-w-32 text-white border border-gray-300">Date</th>
+                                <th class="min-w-48 text-white border border-gray-300">Morning session</th>
+                                <th class="min-w-48 text-white border border-gray-300">Afternoon session</th>
+                                <th class="min-w-40 text-white border border-gray-300">Extra hours</th>
+                            </tr>
+    
+                            {% for i in details %}
+                            <tr class="uppercase table-row">
+                                <td class="min-w-14 border border-gray-300 text-center">{{ i.id }}</td>
+                                <td class="min-w-14 border border-gray-300 px-2">{{ i.FirstName }} {{ i.LastName }}</td>
+                                <td class="min-w-24 border border-gray-300 text-center pb-3 items-center">
+                                    <input type="checkbox" class="mt-4 border cursor-pointer" name="morning_{{ i.id }}" checked>
+                                </td>
+                                <td class="min-w-24 border border-gray-300 text-center pb-3 items-center">
+                                    <input type="checkbox" class="mt-4 cursor-pointer" name="afternoon_{{ i.id }}" checked>
+                                </td>
+                                <td class="min-w-24 border text-center pb-2 border-gray-300">
+                                    <select name="extra_hours_{{ i.id }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
+                                        <option value="0" selected>None</option>
+                                        <option value="0.5">EH: 30min</option>
+                                        <option value="1">EH: 1 hour</option>
+                                        <option value="1.5">EH: 1.5 hours</option>
+                                        <option value="2">EH: 2 hours</option>
+                                        <option value="2.5">EH: 2.5 hours</option>
+                                        <option value="3">EH: 3 hours</option>
+                                        <option value="3.5">EH: 3.5 hours</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
             </div>
         </div>
     </div>
-
-    <script>
-        function fetchAttendance() {
-            var dateFrom = document.getElementById('date_from').value;
-            var dateTo = document.getElementById('date_to').value;
-
-            // Fetch attendance records via AJAX
-            $.ajax({
-                url: '{% url 'employee_attendance' employee_id=employee_id %}',
-                method: 'POST',
-                data: {
-                    'date_from': dateFrom,
-                    'date_to': dateTo,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function(response) {
-                    var attendanceHtml = '';
-                    response.attendance_data.forEach(function(record, index) {
-                        attendanceHtml += '<p>Date: ' + record.date + '</p>' +
-                                            '<p>Forenoon: ' + record.forenoon + '</p>' +
-                                            '<p>Afternoon: ' + record.afternoon + '</p>' +
-                                            '<p>Extra Hours: ' + record.extra_hours + '</p>' +
-                                            '<p>Total Hours: ' + record.total_hours + '</p><hr>';
-                    });
-                    document.getElementById('attendanceRecords').innerHTML = attendanceHtml;
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
-    </script>
 </body>
 </html>
