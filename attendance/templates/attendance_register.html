@@ -180,15 +180,17 @@
         <form method="post" action="attendance" onsubmit="showSuccessModal(); return true;">
             {% csrf_token %}
 
-        <div class="ml-60 min-h-screen mt-10 align-bottom bg-gray-100 rounded-xl mb-20 pb-10 pr-2 flex-grow" style="width:970px">
-            <p class="p-0 pt-4 pl-6 text-2xl text-blue-600" style="font-family: 'Jost'">Attendance Sheet</p>
+        <div class="ml-60 min-h-screen mt-10 align-bottom min-w-full bg-gray-100 rounded-xl mb-20 pb-10  flex-grow" >
+             <p style="width: 1200px;" class="bg-blue-600 p-0 pt-4 pl-6 pb-3 min-w-full rounded-xl rounded-b-none text-2xl text-white text-center" style="font-family: 'Jost'">Attendance Sheet</p>
+
+           
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex p-4 align-middle">
+                <div class="flex justify-end p-4 align-middle">
                     <p class="p-2 text-lg text-blue-600" style="font-family: 'Jost'">Date</p>
                     <input class="text-sm mt-1 max-w-36 rounded border-spacing-2 cursor-pointer" type="date" name="date" id="date">
                 </div>
-                <div class="flex p-4 align-middle">
+                <div class="flex justify-start p-4 align-middle">
                     <p class="p-2 text-lg text-blue-600" style="font-family: 'Jost'">Working Day</p>
                     <label class="toggle-switch">
                         <input type="checkbox" name="working" id="working">

@@ -150,7 +150,8 @@
             <div class="p-0 pt-4 pl-6 text-lg ml-2" style="font-family: 'Jost'">
                 Name : {{ employee.FirstName }} {{ employee.LastName }}
             </div>
-        <form action="" method="get">
+        <form action="{% url 'employee_attendance' employee.id %}" method="post">
+            {% csrf_token %}
             <div class="p-0 pt-2 pl-2 flex ml-2 mb-4" style="font-family: 'Jost'">
                 <div class="mt-1 ml-4">Date From</div>
                 <div class="mr-2 text-lg flex">
@@ -160,7 +161,7 @@
                 <div class="text-lg ">
                     <input class="text-sm  ml-3 max-w-36 rounded border-none cursor-pointer" type="date" id="date_to" name="date_to" placeholder="">
                 </div>
-                <button class="border-none bg-blue-600 px-8 py-1 ml-10 text-white font-semibold shadow-md rounded-md" value="{{ employee.id }}">View</button>
+                <button class="border-none bg-blue-600 px-8 py-1 ml-10 text-white font-semibold shadow-md rounded-md" type="submit">View</button>
             </div>
         </form>
             <div id="" class="overflow-x-auto max">
@@ -175,26 +176,38 @@
                                 <th class="min-w-40 text-white border border-gray-300">Extra hours</th>
                             </tr>
     
-                            {% for i in details %}
+                            {% for record in attendance_data %}
                             <tr class="uppercase table-row">
-                                <td class="min-w-14 border border-gray-300 text-center">{{ i.id }}</td>
-                                <td class="min-w-14 border border-gray-300 px-2">{{ i.FirstName }} {{ i.LastName }}</td>
+                                <td class="min-w-14 border border-gray-300 text-center">{{ forloop.counter }}</td>
+                                <td class="min-w-14 border border-gray-300 px-2">{{ record.date }}</td>
                                 <td class="min-w-24 border border-gray-300 text-center pb-3 items-center">
-                                    <input type="checkbox" class="mt-4 border cursor-pointer" name="morning_{{ i.id }}" checked>
+                                    <select name="morning_{{ forloop.counter }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
+
+                                            <option value="present" class="text-green-500" {% if record.forenoon %}selected{% endif %}>Present</option>
+
+                                            <option value="absent" class="text-red-500" {% if record.forenoon %}selected{% endif %}>Absent</option>
+                                    </select>
+                                    
+                                
                                 </td>
                                 <td class="min-w-24 border border-gray-300 text-center pb-3 items-center">
-                                    <input type="checkbox" class="mt-4 cursor-pointer" name="afternoon_{{ i.id }}" checked>
+                                    <select name="morning_{{ forloop.counter }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
+
+                                        <option value="present" class="text-green-500" {% if record.forenoon %}selected{% endif %}>Present</option>
+
+                                        <option value="absent" class="text-red-500" {% if record.forenoon %}selected{% endif %}>Absent</option>
+                                    </select>                             
                                 </td>
                                 <td class="min-w-24 border text-center pb-2 border-gray-300">
-                                    <select name="extra_hours_{{ i.id }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
-                                        <option value="0" selected>None</option>
-                                        <option value="0.5">EH: 30min</option>
-                                        <option value="1">EH: 1 hour</option>
-                                        <option value="1.5">EH: 1.5 hours</option>
-                                        <option value="2">EH: 2 hours</option>
-                                        <option value="2.5">EH: 2.5 hours</option>
-                                        <option value="3">EH: 3 hours</option>
-                                        <option value="3.5">EH: 3.5 hours</option>
+                                    <select name="extra_hours_{{ forloop.counter }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
+                                        <option value="0" {% if record.extra_hours == 0 %}selected{% endif %}>None</option>
+                                        <option value="0.5" {% if record.extra_hours == 0.5 %}selected{% endif %}>EH: 30min</option>
+                                        <option value="1" {% if record.extra_hours == 1 %}selected{% endif %}>EH: 1 hour</option>
+                                        <option value="1.5" {% if record.extra_hours == 1.5 %}selected{% endif %}>EH: 1.5 hours</option>
+                                        <option value="2" {% if record.extra_hours == 2 %}selected{% endif %}>EH: 2 hours</option>
+                                        <option value="2.5" {% if record.extra_hours == 2.5 %}selected{% endif %}>EH: 2.5 hours</option>
+                                        <option value="3" {% if record.extra_hours == 3 %}selected{% endif %}>EH: 3 hours</option>
+                                        <option value="3.5" {% if record.extra_hours == 3.5 %}selected{% endif %}>EH: 3.5 hours</option>
                                     </select>
                                 </td>
                             </tr>

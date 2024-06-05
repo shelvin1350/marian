@@ -90,25 +90,27 @@ def attendanceByDate(request):
     data = Employees.objects.all()
     return render(request, 'attendance_date.html', {'details':data})
 
-@csrf_protect
+# @csrf_protect
+# def view_employee_details(request, employee_id):
+#     employee = get_object_or_404(Employees, id=employee_id)
+#     return render(request, 'attendance_date_view.html', {'employee': employee})
+    
+    
+@csrf_protect   
 def view_employee_details(request, employee_id):
-    # Retrieve the employee details based on the ID
     employee = get_object_or_404(Employees, id=employee_id)
     return render(request, 'attendance_date_view.html', {'employee': employee})
-    
-    
+
 def view_employee_attendance(request, employee_id):
     if request.method == 'POST':
         date_from = request.POST.get('date_from')
         date_to = request.POST.get('date_to')
 
-        # Query the attendance records for the employee within the specified date range
         attendance_data = Attendance.objects.filter(
             employee_id=employee_id,
             Date__range=[date_from, date_to]
         ).values('Date', 'Forenoon', 'Afternoon', 'ExtraHours', 'TotalHours')
 
-        # Prepare the data to be sent as JSON response
         attendance_list = []
         for attendance in attendance_data:
             attendance_list.append({
@@ -119,7 +121,7 @@ def view_employee_attendance(request, employee_id):
                 'total_hours': attendance['TotalHours']
             })
 
-        return JsonResponse({'attendance_data': attendance_list})
+        employee = get_object_or_404(Employees, id=employee_id)
+        return render(request, 'attendance_date_view.html', {'employee': employee, 'attendance_data': attendance_list})
 
-    # If not a POST request or not an AJAX request, return 404
     return JsonResponse({'error': 'Page not found'}, status=404)
