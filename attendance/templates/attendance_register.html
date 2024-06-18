@@ -177,11 +177,11 @@
             </ul>
         </div>
 
-        <form method="post" action="attendance" onsubmit="showSuccessModal(); return true;">
+        <form method="post" action="attendance" onsubmit="showSuccessModal(); return true;" class="max-w-screen">
             {% csrf_token %}
 
-        <div class="ml-60 min-h-screen mt-10 align-bottom min-w-full bg-gray-100 rounded-xl mb-20 pb-10  flex-grow" >
-             <p style="width: 1200px;" class="bg-blue-600 p-0 pt-4 pl-6 pb-3 min-w-full rounded-xl rounded-b-none text-2xl text-white text-center" style="font-family: 'Jost'">Attendance Sheet</p>
+        <div class="ml-60 min-h-screen mt-10 align-bottom w-full  bg-gray-100 rounded-xl mb-20 pb-10  flex-grow" >
+             <p class="bg-blue-600 p-0 pt-4 pl-6 pb-3 w-full rounded-xl rounded-b-none text-2xl text-white text-center" style="font-family: 'Jost'">Attendance Sheet</p>
 
            
 
