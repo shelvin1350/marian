@@ -22,14 +22,6 @@
             max-height: 6000px;
         }
 
-        .sidebar-item {
-            transition: padding-left 0.3s, box-shadow 0.3s;
-        }
-
-        .sidebar-item:hover {
-            padding-left: 1.25rem;
-            box-shadow: none;
-        }
 
         .table-row {
             transition: background-color 0.3s;
@@ -37,10 +29,6 @@
 
         .table-row:hover {
             background-color: #e0f7fa;
-        }
-
-        .sidebar {
-            transition: all 0.3s ease-out;
         }
 
         .toggle-switch {
@@ -147,40 +135,45 @@
         });
     </script>
 </head>
-<body class="bg-blue-700 min-h-screen flex flex-col">
-    <div class="text-right pr-6 pt-6">
+<body class="bg-blue-500">
+    
+    <div class="text-right h-1/6">
         <span class="material-symbols-outlined invert text-2xl pr-4">settings</span>
         <span class="material-symbols-outlined invert text-2xl">account_circle</span>
     </div>
-
-    <div class="flex flex-1">
-        <div class="fixed top-24 left-2 w-56 h-full bg-white rounded-xl shadow-lg">
+    <div class="flex flex-1 align-middle justify-center">
+    <div class="grid grid-cols-5 relative container h-max box">
+        <div class="relative h-full bg-white rounded-xl shadow-lg col-span-1">
+            <div class="absolute">
             <ul class="pt-8 pl-2">
-                <a href="{% url 'attendance' %}">
-                    <li class="sidebar-item p-4 pt-2 bg-blue-100 shadow-inner hover:shadow-none hover:px-5 rounded-t-lg rounded-tr-none flex cursor-pointer">
-                        <span class="material-symbols-outlined pr-2">checklist</span>
-                        Attendance Sheet
-                    </li>
-                </a>
+                <div>
+                    <a href="{% url 'attendance' %}">
+                        <li class="p-2 pt-2 bg-blue-100 shadow-inner hover:shadow-none hover:px-1 rounded-t-lg rounded-tr-none grid grid-cols-6 cursor-pointer">
+                            <span class="material-symbols-outlined pr-2 col-span-1">checklist</span>
+                            <p class="text-sm col-span-5">Attendance Sheet</p>
+                        </li>
+                    </a>
+                </div>
                 <a href="{% url 'attendance/date' %}">
-                    <li class="sidebar-item p-4 flex cursor-pointer hover:px-5">
-                        <span class="material-symbols-outlined pr-2">description</span> 
-                        Attendance Report by date
+                    <li class="p-2 grid grid-cols-6 cursor-pointer hover:px-1">
+                        <span class="material-symbols-outlined pr-2 col-span-1">description</span> 
+                        <p class="text-sm col-span-5">Attendance Report by date</p>
                     </li>
                 </a>
                 <a href="#">
-                    <li class="sidebar-item p-4 flex cursor-pointer hover:px-5">
-                        <span class="material-symbols-outlined pr-2">calendar_apps_script</span> 
-                        Attendance Report by month
+                    <li class="p-2 grid grid-cols-6 cursor-pointer hover:px-1">
+                        <span class="material-symbols-outlined pr-2 col-span-1">calendar_apps_script</span> 
+                        <p class="text-sm col-span-5">Attendance Report by month</p>
                     </li>
                 </a>
             </ul>
         </div>
-
-        <form method="post" action="attendance" onsubmit="showSuccessModal(); return true;" class="max-w-screen">
+        </div>
+        <div class="relative col-span-4 px-2" >
+        <form method="post" action="attendance" onsubmit="showSuccessModal(); return true;" >
             {% csrf_token %}
 
-        <div class="ml-60 min-h-screen mt-10 align-bottom w-full  bg-gray-100 rounded-xl mb-20 pb-10  flex-grow" >
+        <div class="min-h-screen align-bottom w-full  bg-gray-100 rounded-xl mb-20 pb-10 " >
              <p class="bg-blue-600 p-0 pt-4 pl-6 pb-3 w-full rounded-xl rounded-b-none text-2xl text-white text-center" style="font-family: 'Jost'">Attendance Sheet</p>
 
            
@@ -202,7 +195,7 @@
                 <p>The attendance is already entered. Please select another date</p>
             {% else %}
             <div id="attendanceSheet">
-                <div class="overflow-x-auto">
+                <div class="min-h-full overflow-auto">
                     <table class="border border-collapse ml-8 border-white bg-white min-w-fit">
                         <tr class="bg-blue-700 h-12">
                             <th class="min-w-14 text-white border border-b-white border-r-white py-4">No.</th>
@@ -245,7 +238,8 @@
             {% endif %}
         </div>
     </form>
-
+    </div>
+    </div>
     <!-- Success Modal -->
     <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 modal-inactive">
         <div class="bg-white rounded-lg p-6">
@@ -253,5 +247,6 @@
             <p>Attendance has been submitted successfully.</p>
         </div>
     </div>
+</div>
 </body>
 </html>

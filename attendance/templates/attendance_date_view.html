@@ -183,9 +183,9 @@
                                 <td class="min-w-24 border border-gray-300 text-center pb-3 items-center">
                                     <select name="morning_{{ forloop.counter }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
 
-                                            <option value="present" class="text-green-500" {% if record.forenoon %}selected{% endif %}>Present</option>
+                                            <option value="present" class="text-green-500" {% if record.forenoon == 4 %}selected{% endif %}>Present</option>
 
-                                            <option value="absent" class="text-red-500" {% if record.forenoon %}selected{% endif %}>Absent</option>
+                                            <option value="absent" class="text-red-500" {% if record.forenoon == 0 %}selected{% endif %}>Absent</option>
                                     </select>
                                     
                                 
@@ -193,9 +193,9 @@
                                 <td class="min-w-24 border border-gray-300 text-center pb-3 items-center">
                                     <select name="morning_{{ forloop.counter }}" class="h-7 min-w-32 mt-3 border rounded-lg px-2 p-0 cursor-pointer">
 
-                                        <option value="present" class="text-green-500" {% if record.forenoon %}selected{% endif %}>Present</option>
+                                        <option value="present" class="text-green-500" {% if record.afternoon == 4 %}selected{% endif %}>Present</option>
 
-                                        <option value="absent" class="text-red-500" {% if record.forenoon %}selected{% endif %}>Absent</option>
+                                        <option value="absent" class="text-red-500" {% if record.afternoon == 0 %}selected{% endif %}>Absent</option>
                                     </select>                             
                                 </td>
                                 <td class="min-w-24 border text-center pb-2 border-gray-300">
